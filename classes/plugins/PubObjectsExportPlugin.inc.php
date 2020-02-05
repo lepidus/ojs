@@ -361,6 +361,7 @@ abstract class PubObjectsExportPlugin extends ImportExportPlugin {
 		$errors = array_filter(libxml_get_errors(), function($a) {
 			return $a->level == LIBXML_ERR_ERROR || $a->level == LIBXML_ERR_FATAL;
 		});
+		die();
 		if (!empty($errors)) {
 			$this->displayXMLValidationErrors($errors, $xml);
 		}

@@ -26,7 +26,7 @@
 
 ; Set this to On once the system has been installed
 ; (This is generally done automatically by the installer)
-installed = Off
+installed = On
 
 ; The canonical URL to the OJS installation (excluding the trailing slash)
 base_url = "http://pkp.sfu.ca/ojs"
@@ -55,12 +55,12 @@ scheduled_tasks = Off
 time_zone = "UTC"
 
 ; Short and long date formats
-date_format_trunc = "%m-%d"
-date_format_short = "%Y-%m-%d"
-date_format_long = "%B %e, %Y"
-datetime_format_short = "%Y-%m-%d %I:%M %p"
-datetime_format_long = "%B %e, %Y - %I:%M %p"
-time_format = "%I:%M %p"
+date_format_trunc = "%d-%m"
+date_format_short = "%d-%m-%Y"
+date_format_long = "%e de %B de %Y"
+datetime_format_short = "%d-%m-%Y %H:%M"
+datetime_format_long = "%e de %B de %Y - %H:%M"
+time_format = "%H:%M"
 
 ; Use URL parameters instead of CGI PATH_INFO. This is useful for
 ; broken server setups that don't support the PATH_INFO environment
@@ -87,7 +87,7 @@ allow_url_fopen = Off
 ; Generate RESTful URLs using mod_rewrite.  This requires the
 ; rewrite directive to be enabled in your .htaccess or httpd.conf.
 ; See FAQ for more details.
-restful_urls = Off
+restful_urls = On
 
 ; Allow the X_FORWARDED_FOR header to override the REMOTE_ADDR as the source IP
 ; Set this to "On" if you are behind a reverse proxy and you control the X_FORWARDED_FOR
@@ -128,7 +128,7 @@ sitewide_privacy_statement = Off
 
 [database]
 
-driver = mysql
+driver = mysqli
 host = localhost
 username = ojs
 password = ojs
@@ -189,7 +189,7 @@ web_cache_hours = 1
 [i18n]
 
 ; Default locale
-locale = en_US
+locale = pt_BR
 
 ; Client output/input character set
 client_charset = utf-8
@@ -198,11 +198,11 @@ client_charset = utf-8
 ; Must be set to "Off" if not supported by the database server
 ; If enabled, must be the same character set as "client_charset"
 ; (although the actual name may differ slightly depending on the server)
-connection_charset = Off
+connection_charset = utf8
 
 ; Database storage character set
 ; Must be set to "Off" if not supported by the database server
-database_charset = Off
+database_charset = utf8
 
 
 ;;;;;;;;;;;;;;;;;
@@ -214,7 +214,7 @@ database_charset = Off
 ; Complete path to directory to store uploaded files
 ; (This directory should not be directly web-accessible)
 ; Windows users should use forward slashes
-files_dir = files
+files_dir = #[caminho não acessível pela Web]
 
 ; Path to the directory to store public uploaded files
 ; (This directory should be web-accessible and the specified path
@@ -253,7 +253,7 @@ force_login_ssl = Off
 ; This check will invalidate a session if the user's IP address changes.
 ; Enabling this option provides some amount of additional security, but may
 ; cause problems for users behind a proxy farm (e.g., AOL).
-session_check_ip = On
+session_check_ip = Off
 
 ; The encryption (hashing) algorithm to use for encrypting user passwords
 ; Valid values are: md5, sha1
@@ -496,7 +496,7 @@ xslt_command = ""
 ; Display a stack trace when a fatal error occurs.
 ; Note that this may expose private information and should be disabled
 ; for any production system.
-show_stacktrace = Off
+show_stacktrace = On
 
 ; Display an error message when something goes wrong.
 display_errors = Off

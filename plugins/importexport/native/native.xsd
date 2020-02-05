@@ -39,7 +39,7 @@
 								<enumeration value="production" />
 							</restriction>
 						</simpleType>
-					</attribute>
+					</attribute>	
 				</extension>
 			</complexContent>
 		</complexType>

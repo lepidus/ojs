@@ -97,7 +97,7 @@ class NativeImportExportPlugin extends ImportExportPlugin {
 				header('Content-Type: application/json');
 				return $json->getString();
 			case 'importBounce':
-				$json = new JSONMessage(true);
+    			$json = new JSONMessage(true);
 				$json->setEvent('addTab', array(
 					'title' => __('plugins.importexport.native.results'),
 					'url' => $request->url(null, null, null, array('plugin', $this->getName(), 'import'), array('temporaryFileId' => $request->getUserVar('temporaryFileId'))),
@@ -116,7 +116,6 @@ class NativeImportExportPlugin extends ImportExportPlugin {
 					return $json->getString();
 				}
 				$temporaryFilePath = $temporaryFile->getFilePath();
-
 				$filter = 'native-xml=>issue';
 				// is this articles import:
 				$xmlString = file_get_contents($temporaryFilePath);
@@ -125,9 +124,8 @@ class NativeImportExportPlugin extends ImportExportPlugin {
 				if (in_array($document->documentElement->tagName, array('article', 'articles'))) {
 					$filter = 'native-xml=>article';
 				}
-
+				
 				$deployment = new NativeImportExportDeployment($journal, $user);
-
 				libxml_use_internal_errors(true);
 				$content = $this->importSubmissions(file_get_contents($temporaryFilePath), $filter, $deployment);
 				$templateMgr->assign('content', $content);
