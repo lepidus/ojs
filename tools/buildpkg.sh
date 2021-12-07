@@ -16,12 +16,12 @@
 GITREP=git://github.com/pkp/ojs.git
 
 if [ -z "$1" ]; then
-	echo "Usage: $0 <version> [<tag>-<branch>]";
+	echo "Usage: $0 <version> <branch>";
 	exit 1;
 fi
 
 VERSION=$1
-TAG=$2
+BRANCH=$2
 PREFIX=ojs
 BUILD=$PREFIX-$VERSION
 TMPDIR=`mktemp -d $PREFIX.XXXXXX` || exit 1
@@ -97,27 +97,34 @@ lib/ui-library"
 
 cd $TMPDIR
 
-echo -n "Cloning $GITREP and checking out tag $TAG ... "
-git clone -b $TAG --depth 1 -q -n $GITREP $BUILD || exit 1
+echo -n "Cloning $GITREP and checking out branch $BRANCH ... "
+git clone -b $BRANCH --depth 1 -q -n $GITREP $BUILD || exit 1
 cd $BUILD
-git checkout -q $TAG || exit 1
+git checkout -q $BRANCH || exit 1
 echo "Done"
 
 echo -n "Checking out corresponding submodules ... "
 git submodule -q update --init --recursive >/dev/null || exit 1
 echo "Done"
 
+echo -n "Cloning lib-pkp and checking out branch $BRANCH ..."
+rm -rf lib/pkp
+git clone -b $BRANCH --depth 1 -q -n https://github.com/pkp/pkp-lib.git lib/pkp || exit 1
+cd lib/pkp
+git checkout -q $BRANCH || exit 1
+cd ../..
+
 echo "Installing composer dependencies:"
 echo -n " - lib/pkp ... "
-composer.phar --working-dir=lib/pkp install --no-dev
+composer --working-dir=lib/pkp install --no-dev
 echo "Done"
 
 echo -n " - plugins/paymethod/paypal ... "
-composer.phar --working-dir=plugins/paymethod/paypal install --no-dev
+composer --working-dir=plugins/paymethod/paypal install --no-dev
 echo "Done"
 
 echo -n " - plugins/generic/citationStyleLanguage ... "
-composer.phar --working-dir=plugins/generic/citationStyleLanguage install --no-dev
+composer --working-dir=plugins/generic/citationStyleLanguage install --no-dev
 echo "Done"
 
 echo -n "Installing node dependencies... "
