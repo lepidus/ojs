@@ -1,0 +1,27 @@
+variables:
+  MARIADB_USER: "${APPLICATION_ID}"
+  MARIADB_DATABASE: "${APPLICATION_ID}"
+  MARIADB_PASSWORD: "${DATABASE_OJS_USER_PASSWORD}"
+  MARIADB_HOST: mariadb
+  MARIADB_ROOT_PASSWORD: "${DATABASE_ROOT_PASSWORD}"
+
+phpunit:
+  services:
+    - mariadb
+  script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt update && apt install wget git locales-all php-{cli,intl,xml,mysql} phpunit composer mysql-client -yqq
+    - cp config.TEMPLATE.inc.php config.inc.php
+    - wget https://raw.githubusercontent.com/pkp/datasets/main/ojs/stable-3_3_0/mysql/database.sql -O dump.sql
+    - mysql --user="$MARIADB_USER" --password="$MARIADB_PASSWORD" --host=mariadb "$MARIADB_DATABASE" < dump.sql
+    - sed -i 's/host = localhost/host = mariadb/' config.inc.php
+    - sed -i -e 's/installed = Off/installed = On/' config.inc.php
+    - git submodule update --init --recursive
+    - composer --working-dir=lib/pkp install
+    - composer --working-dir=plugins/paymethod/paypal install
+    - composer --working-dir=plugins/generic/citationStyleLanguage install
+    - php lib/pkp/lib/vendor/phpunit/phpunit/phpunit --configuration lib/pkp/tests/phpunit-env1.xml -v lib/pkp/tests/classes --log-junit phpunit-report.xml tests
+  artifacts:
+    when: always
+    reports:
+      junit: phpunit-report.xml
