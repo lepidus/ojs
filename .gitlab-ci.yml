@@ -5,4 +5,4 @@ include:
   - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
     ref: main
     file:
-      - 'templates/ojs_execute_tests.yml'
+      - 'templates/groups/ojs_ci.yml'
