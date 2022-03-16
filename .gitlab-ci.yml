@@ -1,5 +1,5 @@
 variables:
-  BRANCH: stable-3_3_0
+  BRANCH: stable-3_3_0 
 
 include:
   - project: 'documentacao-e-tarefas/modelosparaintegracaocontinua'
